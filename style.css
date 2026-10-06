@@ -1,0 +1,463 @@
+/* =========================================================
+   RAFTAKI ADAMLAR — style.css
+   Tema değişkenleri, kağıt/dosya dokusu, tooltip, glitch,
+   daktilo imleci ve kanıt panosu efektleri.
+========================================================= */
+
+:root{
+  --bg:      10 13 18;     /* #0A0D12 */
+  --panel:   16 20 27;
+  --accent:  0 163 224;    /* #00A3E0 */
+  --accent2: 0 85 128;     /* #005580 */
+  --text:    226 232 240;  /* #E2E8F0 */
+  --mist:    140 152 168;
+  --blood:   214 70 70;
+
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+}
+
+/* OLIVIA MODE — vurgu renkleri yeşil / mor kimyasal tona döner */
+html.olivia-mode{
+  --accent:  63 224 165;   /* neon yeşil */
+  --accent2: 124 58 237;   /* kimyasal mor */
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+body{
+  background-color: rgb(var(--bg));
+  transition: background-color .6s ease;
+}
+
+::selection{
+  background: rgb(var(--accent) / .35);
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar{ width: 8px; }
+::-webkit-scrollbar-track{ background: rgb(var(--bg)); }
+::-webkit-scrollbar-thumb{
+  background: rgb(var(--accent) / .35);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover{ background: rgb(var(--accent) / .6); }
+
+/* ---------- Navbar scrolled state ---------- */
+#navbar.scrolled{
+  background: rgb(var(--bg) / .75);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgb(var(--accent) / .12);
+}
+
+/* ---------- Film grain ---------- */
+.grain-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* =========================================================
+   FADE UP ON SCROLL
+========================================================= */
+.fade-up{
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .8s ease, transform .8s ease;
+  transition-delay: var(--d, 0s);
+}
+.fade-up.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================================
+   TYPEWRITER
+========================================================= */
+.type-cursor{
+  display: inline-block;
+  margin-left: 2px;
+  color: rgb(var(--accent));
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink{
+  0%, 45%{ opacity: 1; }
+  50%, 100%{ opacity: 0; }
+}
+
+/* =========================================================
+   3D BOOK COVER
+========================================================= */
+.book-stage{
+  position: relative;
+  perspective: 1400px;
+  padding: 40px;
+}
+
+.book-cover{
+  position: relative;
+  width: 260px;
+  height: 380px;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tilt-y)) rotateY(var(--tilt-x));
+  transition: transform .15s ease-out;
+}
+
+@media (min-width: 768px){
+  .book-cover{ width: 300px; height: 440px; }
+}
+
+.book-cover-face{
+  position: absolute;
+  inset: 0;
+  border-radius: 4px 10px 10px 4px;
+  padding: 34px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 30% 20%, rgb(var(--accent2) / .35), transparent 55%),
+    linear-gradient(160deg, #0d1420 0%, #070a10 70%);
+  border: 1px solid rgb(var(--accent) / .25);
+  box-shadow:
+    0 30px 60px -20px rgba(0,0,0,.75),
+    inset 0 0 40px rgba(0,0,0,.5),
+    0 0 60px -10px rgb(var(--accent) / .18);
+  transform: translateZ(20px);
+  overflow: hidden;
+}
+
+.book-cover-texture{
+  background-image:
+    repeating-linear-gradient(115deg, rgb(255 255 255 / .02) 0px, rgb(255 255 255 / .02) 1px, transparent 1px, transparent 6px);
+  mix-blend-mode: overlay;
+}
+
+.book-cover-spine{
+  position: absolute;
+  left: -14px;
+  top: 3%;
+  width: 14px;
+  height: 94%;
+  background: linear-gradient(180deg, #050709, #0c1119 50%, #050709);
+  border-radius: 4px 0 0 4px;
+  transform: rotateY(-90deg) translateZ(7px);
+  box-shadow: inset -2px 0 6px rgba(0,0,0,.6);
+}
+
+.book-cover-pages{
+  position: absolute;
+  right: -6px;
+  top: 2%;
+  width: 10px;
+  height: 96%;
+  background: repeating-linear-gradient(180deg, #d9d3c5, #cfc8b8 2px, #b9b19d 2px, #b9b19d 3px);
+  border-radius: 0 3px 3px 0;
+  transform: translateZ(-2px);
+  opacity: .9;
+}
+
+.book-shadow{
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  width: 70%;
+  height: 34px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.55), transparent 70%);
+  filter: blur(4px);
+}
+
+.secret-icon{
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--mist) / .35);
+  border: 1px solid rgb(var(--mist) / .15);
+  cursor: pointer;
+  transition: color .3s ease, border-color .3s ease, box-shadow .3s ease;
+  background: transparent;
+}
+.secret-icon:hover{
+  color: rgb(var(--accent));
+  border-color: rgb(var(--accent) / .5);
+  box-shadow: 0 0 14px rgb(var(--accent) / .35);
+}
+
+/* =========================================================
+   CASE FOLDER (Bölüm 1 okuyucu)
+========================================================= */
+.case-folder{
+  position: relative;
+  background: linear-gradient(180deg, rgb(var(--panel) / .9), rgb(var(--panel) / .7));
+  border: 1px solid rgb(var(--accent) / .15);
+  border-radius: 4px;
+  padding: 44px 30px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 30px 60px -30px rgba(0,0,0,.7);
+}
+@media (min-width: 768px){
+  .case-folder{ padding: 56px 64px; }
+}
+
+.case-tab{
+  position: absolute;
+  top: -18px;
+  left: 32px;
+  background: rgb(var(--accent) / .15);
+  border: 1px solid rgb(var(--accent) / .4);
+  color: rgb(var(--accent));
+  font-size: 10px;
+  letter-spacing: .2em;
+  padding: 6px 14px;
+  border-radius: 3px 3px 0 0;
+}
+
+.stamp{
+  position: absolute;
+  top: 26px;
+  right: 22px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .3em;
+  color: rgb(var(--blood) / .65);
+  border: 2px solid rgb(var(--blood) / .5);
+  padding: 4px 10px;
+  border-radius: 3px;
+  transform: rotate(8deg);
+  opacity: .7;
+}
+
+.reader-p{
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reader-p.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reader-final{
+  text-shadow: 0 0 24px rgb(var(--accent) / .5);
+  letter-spacing: .02em;
+}
+
+/* ---- tooltip terms ---- */
+.tt{
+  position: relative;
+  color: rgb(var(--accent));
+  border-bottom: 1px dashed rgb(var(--accent) / .55);
+  cursor: help;
+  transition: color .2s ease;
+}
+.tt:hover{ color: rgb(var(--text)); }
+
+.tooltip-box{
+  position: fixed;
+  z-index: 60;
+  max-width: 260px;
+  background: rgb(var(--panel) / .97);
+  border: 1px solid rgb(var(--accent) / .4);
+  color: rgb(var(--text));
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11.5px;
+  line-height: 1.6;
+  letter-spacing: .01em;
+  padding: 12px 14px;
+  border-radius: 6px;
+  box-shadow: 0 20px 40px -14px rgba(0,0,0,.7), 0 0 0 1px rgb(0 0 0 / .3);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease;
+  pointer-events: none;
+}
+.tooltip-box.visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================================
+   SORUŞTURMA PANOSU
+========================================================= */
+.board-bg{
+  background-image:
+    radial-gradient(rgb(var(--mist) / .12) 1px, transparent 1px);
+  background-size: 26px 26px;
+  background-position: -10px -10px;
+}
+
+.evidence-card{
+  position: relative;
+  background: rgb(var(--panel) / .8);
+  border: 1px solid rgb(255 255 255 / .06);
+  border-radius: 6px;
+  padding: 26px 22px 22px;
+  backdrop-filter: blur(10px);
+  transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+.evidence-card:hover{
+  transform: translateY(-6px) rotate(-.4deg);
+  border-color: rgb(var(--accent) / .4);
+  box-shadow: 0 24px 50px -22px rgba(0,0,0,.7), 0 0 24px -8px rgb(var(--accent) / .3);
+}
+
+.pin{
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, rgb(var(--accent)), rgb(var(--accent2)));
+  box-shadow: 0 3px 8px rgb(var(--accent) / .6);
+}
+.pin-red{
+  background: radial-gradient(circle at 30% 30%, #e05656, #7a1f1f);
+  box-shadow: 0 3px 8px rgba(224,86,86,.55);
+}
+
+.tape{
+  position: absolute;
+  top: -10px;
+  width: 56px;
+  height: 20px;
+  background: rgb(var(--text) / .12);
+  border: 1px solid rgb(var(--text) / .08);
+  opacity: .55;
+}
+.tape-left{ left: 14px; transform: rotate(-8deg); }
+.tape-right{ right: 14px; transform: rotate(7deg); }
+
+.evidence-photo{
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / .04);
+  border: 1px solid rgb(255 255 255 / .08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.evidence-card--locked{
+  border-style: dashed;
+  border-color: rgb(var(--mist) / .25);
+}
+.evidence-photo--locked{
+  filter: blur(1px) brightness(.6);
+  position: relative;
+}
+
+.clipping{
+  border-left: 2px solid rgb(var(--blood) / .4);
+  padding-left: 10px;
+}
+
+/* =========================================================
+   GLITCH / OLIVIA MODE OVERLAY
+========================================================= */
+#oliviaOverlay{
+  transition: opacity .25s ease;
+}
+#oliviaOverlay.active{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scanlines{
+  background: repeating-linear-gradient(
+    0deg,
+    rgb(255 255 255 / .03) 0px,
+    rgb(255 255 255 / .03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  animation: scan-shift 6s linear infinite;
+}
+@keyframes scan-shift{
+  from{ background-position-y: 0; }
+  to{ background-position-y: 200px; }
+}
+
+.glitch-text{
+  color: rgb(var(--text));
+  animation: glitch-jitter .25s infinite;
+}
+.glitch-text::before,
+.glitch-text::after{
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  left: 0;
+  top: 0;
+}
+.glitch-text::before{
+  color: rgb(var(--accent));
+  clip-path: polygon(0 2%, 100% 2%, 100% 40%, 0 40%);
+  transform: translate(-3px, -1px);
+  animation: glitch-slice 1.4s infinite linear;
+}
+.glitch-text::after{
+  color: rgb(var(--accent2));
+  clip-path: polygon(0 60%, 100% 60%, 100% 98%, 0 98%);
+  transform: translate(3px, 1px);
+  animation: glitch-slice 1.7s infinite linear reverse;
+}
+
+@keyframes glitch-jitter{
+  0%, 100%{ transform: translate(0,0); }
+  20%{ transform: translate(-1px, 1px); }
+  40%{ transform: translate(1px, -1px); }
+  60%{ transform: translate(-1px, -1px); }
+  80%{ transform: translate(1px, 1px); }
+}
+@keyframes glitch-slice{
+  0%{ clip-path: polygon(0 15%, 100% 15%, 100% 22%, 0 22%); }
+  20%{ clip-path: polygon(0 40%, 100% 40%, 100% 52%, 0 52%); }
+  40%{ clip-path: polygon(0 5%, 100% 5%, 100% 12%, 0 12%); }
+  60%{ clip-path: polygon(0 70%, 100% 70%, 100% 85%, 0 85%); }
+  80%{ clip-path: polygon(0 30%, 100% 30%, 100% 38%, 0 38%); }
+  100%{ clip-path: polygon(0 60%, 100% 60%, 100% 68%, 0 68%); }
+}
+
+/* Full-page flash burst when Olivia Mode toggles */
+body.glitch-burst::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: rgb(var(--accent) / .12);
+  animation: burst-flash .4s ease-out;
+  pointer-events: none;
+}
+@keyframes burst-flash{
+  0%{ opacity: 1; }
+  100%{ opacity: 0; }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+@media (prefers-reduced-motion: reduce){
+  *{
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Raftaki Adamlar | Pepper Pots</title>
+<meta name="description" content="Raftaki Adamlar — Pepper Pots'tan psikolojik bir gerilim. Bölüm 1'i oku, soruşturma panosunu incele." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:      'rgb(var(--bg) / <alpha-value>)',
+          panel:   'rgb(var(--panel) / <alpha-value>)',
+          accent:  'rgb(var(--accent) / <alpha-value>)',
+          accent2: 'rgb(var(--accent2) / <alpha-value>)',
+          ink:     'rgb(var(--text) / <alpha-value>)',
+          mist:    'rgb(var(--mist) / <alpha-value>)',
+          blood:   'rgb(var(--blood) / <alpha-value>)',
+        },
+        fontFamily: {
+          display: ['"Playfair Display"', 'serif'],
+          body: ['Inter', 'sans-serif'],
+          mono: ['"IBM Plex Mono"', 'monospace'],
+        },
+        boxShadow: {
+          'glow-accent': '0 0 40px -8px rgb(var(--accent) / 0.45)',
+        }
+      }
+    }
+  }
+</script>
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-bg text-ink font-body antialiased selection:bg-accent/30 selection:text-white">
+
+<!-- FILM GRAIN / NOISE OVERLAY -->
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- OLIVIA MODE GLITCH OVERLAY -->
+<div id="oliviaOverlay" class="fixed inset-0 z-[999] flex items-center justify-center pointer-events-none opacity-0">
+  <div class="absolute inset-0 bg-bg/70 backdrop-blur-sm"></div>
+  <div class="scanlines absolute inset-0"></div>
+  <p id="oliviaGlitchText" class="glitch-text relative font-display italic text-3xl md:text-6xl text-center px-6" data-text="KOLEKSİYON RAFLARI">
+    KOLEKSİYON RAFLARI
+  </p>
+</div>
+
+<!-- NAVBAR -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
+  <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-10 py-5">
+    <a href="#hero" class="font-mono text-xs md:text-sm tracking-[0.25em] uppercase text-ink/90 hover:text-accent transition-colors">
+      Raftaki <span class="text-accent">Adamlar</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 font-mono text-[11px] tracking-[0.2em] uppercase text-mist">
+      <a href="#bolum1" class="hover:text-accent transition-colors">Bölüm I</a>
+      <a href="#pano" class="hover:text-accent transition-colors">Soruşturma Panosu</a>
+      <a href="#duyuru" class="hover:text-accent transition-colors">Haber Al</a>
+    </div>
+    <span class="font-mono text-[10px] md:text-xs tracking-[0.2em] text-mist/70 border border-mist/20 rounded-full px-3 py-1">
+      DOSYA NO. 2024-0917
+    </span>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section id="hero" class="relative min-h-screen overflow-hidden grid lg:grid-cols-2 items-center gap-10 px-6 lg:px-20 pt-36 pb-24">
+  <!-- decorative background -->
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgb(var(--accent2)/0.18),transparent_60%)]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(rgb(var(--accent)/0.05)_1px,transparent_1px),linear-gradient(90deg,rgb(var(--accent)/0.05)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"></div>
+  </div>
+
+  <!-- LEFT: 3D BOOK COVER -->
+  <div class="flex justify-center lg:justify-end order-2 lg:order-1">
+    <div id="bookStage" class="book-stage">
+      <div id="bookCover" class="book-cover">
+        <div class="book-cover-face">
+          <div class="absolute inset-0 book-cover-texture"></div>
+          <span class="font-mono text-[10px] tracking-[0.35em] text-accent/80 uppercase">Psikolojik Gerilim</span>
+          <div class="my-6 h-px w-10 bg-accent/50"></div>
+          <h2 class="font-display font-bold uppercase leading-[0.95] text-3xl md:text-4xl text-white drop-shadow-[0_0_18px_rgba(0,163,224,0.35)]">
+            Raftaki<br />Adamlar
+          </h2>
+          <p class="mt-8 font-mono text-[11px] tracking-[0.25em] text-mist/80 uppercase">Pepper Pots</p>
+
+          <!-- gizli olivia ikonu -->
+          <button id="secretIcon" aria-label="???" class="secret-icon" title=" ">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <circle cx="12" cy="12" r="3.2"></circle>
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="book-cover-spine"></div>
+        <div class="book-cover-pages"></div>
+      </div>
+      <div class="book-shadow"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: HEADLINE -->
+  <div class="order-1 lg:order-2 max-w-xl">
+    <p class="font-mono text-xs md:text-sm tracking-[0.3em] text-accent uppercase mb-6 fade-up" style="--d:0s">
+      İfade Tutanağı · Kayıp Vaka
+    </p>
+
+    <h1 class="font-display italic text-2xl sm:text-3xl md:text-4xl leading-snug text-white min-h-[4.5em] sm:min-h-[3.5em]">
+      <span id="typewriter"></span><span class="type-cursor" aria-hidden="true">|</span>
+    </h1>
+
+    <h2 class="mt-8 font-display font-bold uppercase text-4xl sm:text-5xl md:text-6xl tracking-tight text-white fade-up" style="--d:.15s">
+      Raftaki <span class="text-accent">Adamlar</span>
+    </h2>
+    <p class="mt-3 font-mono text-xs tracking-[0.25em] uppercase text-mist fade-up" style="--d:.25s">Bir roman · Pepper Pots</p>
+
+    <p class="mt-8 text-mist/90 text-sm md:text-base leading-relaxed fade-up" style="--d:.35s">
+        Eşini kaybettikten sonra dağılmış bir adam. Yeniden aşık olduğunu sanırken, bir koleksiyonun son parçasına dönüştüğünden habersizdi...
+    
+      <span class="text-ink">Olivia</span>.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-4 fade-up" style="--d:.45s">
+      <a href="#bolum1" class="group inline-flex items-center gap-2 rounded-full bg-accent/15 border border-accent/40 text-accent px-6 py-3 font-mono text-xs tracking-[0.15em] uppercase hover:bg-accent hover:text-bg transition-all duration-300 shadow-glow-accent">
+        Bölüm 1'i Oku
+        <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#pano" class="inline-flex items-center gap-2 rounded-full border border-mist/25 text-ink/80 px-6 py-3 font-mono text-xs tracking-[0.15em] uppercase hover:border-accent/50 hover:text-accent transition-all duration-300">
+        Soruşturma Panosu
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BÖLÜM 1 - OKUYUCU ================= -->
+<section id="bolum1" class="relative px-6 lg:px-20 py-28">
+  <div class="max-w-3xl mx-auto text-center mb-14 fade-up">
+    <p class="font-mono text-xs tracking-[0.3em] text-accent uppercase mb-3">Kanıt A · Yazılı İfade</p>
+    <h3 class="font-display italic text-3xl md:text-5xl text-white">Bölüm I</h3>
+    <p class="mt-4 text-mist text-sm">Fareyi altı çizili isimlerin üzerine getir — dosyadaki notlar açılsın.</p>
+  </div>
+
+  <div class="max-w-3xl mx-auto relative">
+    <div class="case-folder">
+      <div class="case-tab font-mono">BÖLÜM I</div>
+      <span class="stamp">GİZLİ</span>
+
+      <div class="flex items-center justify-between border-b border-mist/15 pb-4 mb-8">
+        <span class="font-mono text-[11px] tracking-[0.2em] text-mist uppercase">John R. — Kişisel Not</span>
+        <span class="font-mono text-[11px] tracking-[0.2em] text-mist/60 uppercase">Sayfa 01</span>
+      </div>
+
+      <article id="readerText" class="space-y-6 text-[15px] md:text-base leading-8 text-ink/90 font-body">
+        <p class="reader-p">
+          Mahkeme salonundan çıktığımda saat gece yarısını çoktan geçmişti. Savunmamı kazanmıştım —
+          üçüncü kez üst üste. Meslektaşlarım bana
+          <span class="tt" data-tt="JOHN — Anlaıcı. Koleksi">"John, sen kaybetmeyi unutmuşsun"</span>
+          derler. Keşke bu kadar emin olabilseydim hayatımın geri kalanı hakkında da.
+        </p>
+        <p class="reader-p">
+          Evime giden yol her zamankinden daha uzun geldi bu gece. Farların ışığında zihnimdeki anıkar geçip gidiyor.Ölen karımın hayaliyle yaşarken, her şeyi bir tesadüf  sanma lüksüm kalmadı.
+        </p>
+        <p class="reader-p">
+          <span class="tt" data-tt="OLIVIA —  Bir ortaokulda fen bilimleri eğitimi veren  kimyager.">Olivia</span>
+          karşımdaki sandalyeyi çekip oturduğunda, içimdeki karanlık ilk kez aydınlandı sanmıştım. Bana kusursuz bir tesadüf gibi sunulan bu kadının adım adım ördüğü bir tuzağın tam ortasında olduğumdan habersizdim.
+        </p>
+        <p class="reader-p">
+           David'in odasında uğradığımda masanın üzerindeki sarı dosya gözüme çarptı. Birimdeki kayıp vakalardan biriydi. Televizyondaki haberlerde geçiştirilen o detay dosyada açıkça duruyordu
+          <span class="tt" data-tt="OKLAHOMA — Aynı benzinlikten, farklı gecelerde iki erkeğin kaybolduğu küçük kasaba.">Oklahoma'</span>daki
+           aynı benzinlik . iz bırakmdan buharlaşan iki adam.
+          <span class="tt" data-tt="KAYIP ADAMLAR — Medyanın verdiği isim. İkisi arasındaki bağlantı hâlâ çözülemedi.">Kayıp Adamlar</span>
+          Sistemde sadece bu şekilde etiketlenmişlerdi. Telefon sinyali yok, kart hareketi yok. Bir insan ardında tek bir kırıntı bırakmadan nasıl yok olur?
+          
+        </p>
+        <p class="reader-p">
+          
+        David'e belli etmeden dosyayı kapatıp çıktım. Ama zihnimdeki o şüphe kapanmadı. O an bilmiyordum;
+        başkasının kayboluşunu anlamaya çalışırken, kendi kayboluşumun ilk adımlarını atıyordum.
+        </p>
+      
+    
+          Ve içimde bir ses, mahkemede hiç duymadığım kadar net bir sesle fısıldıyor tek bir ismi.
+        </p>
+        <p class="reader-p reader-final font-display italic text-2xl md:text-3xl text-accent pt-2">
+          Olivia.
+        </p>
+      </article>
+
+      <div class="mt-10 pt-6 border-t border-mist/15 flex items-center justify-between">
+        <span class="font-mono text-[11px] text-mist/60 uppercase tracking-[0.2em]">Devamı yakında</span>
+        <a href="#pano" class="font-mono text-[11px] text-accent uppercase tracking-[0.2em] hover:underline">Panoya geç →</a>
+      </div>
+    </div>
+
+    <!-- tooltip -->
+    <div id="tooltipBox" class="tooltip-box" role="tooltip"></div>
+  </div>
+</section>
+
+<!-- ================= SORUŞTURMA PANOSU ================= -->
+<section id="pano" class="relative px-6 lg:px-20 py-28 board-bg">
+  <div class="max-w-4xl mx-auto text-center mb-16 fade-up">
+    <p class="font-mono text-xs tracking-[0.3em] text-accent uppercase mb-3">Kanıt Odası</p>
+    <h3 class="font-display italic text-3xl md:text-5xl text-white">Soruşturma Panosu</h3>
+    <p class="mt-4 text-mist text-sm max-w-lg mx-auto">Kanıtlar, kayıp dosyaları ve hâlâ cevaplanmamış sorular.</p>
+  </div>
+
+  <div class="max-w-6xl mx-auto grid sm:grid-cols-2 xl:grid-cols-4 gap-8">
+
+    <!-- KART: John -->
+    <div class="evidence-card fade-up" style="--d:.05s">
+      <span class="pin"></span>
+      <span class="tape tape-left"></span>
+      <div class="evidence-photo">
+        <svg viewBox="0 0 24 24" class="w-10 h-10 text-mist/50" fill="none" stroke="currentColor" stroke-width="1.3">
+          <circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4.5 5-6.5 8-6.5s6.5 2 8 6.5"/>
+        </svg>
+      </div>
+      <p class="font-mono text-[10px] tracking-[0.2em] text-mist/60 uppercase mt-4">Dosya #01</p>
+      <h4 class="font-display text-xl text-white mt-1">John</h4>
+      <p class="font-mono text-[11px] text-accent uppercase tracking-[0.15em] mt-1">Avukat</p>
+      <p class="mt-3 text-sm text-mist leading-relaxed">
+       Kendi kaybının yasında boğulduğu ve hayatındaki kaosu toparlamaya çalıştığı için çevresinde olup bitenlere karşı tamamamen körleşmiş durumda. En büyük zaferini kazanırken
+       ensesinde adım adım onu takip eden gölgenin ve yaklaşan tehlikenin henüz farkında değil.
+      </p>
+    </div>
+
+    <!-- KART: Kayıp Dosyası #1 -->
+    <div class="evidence-card fade-up" style="--d:.15s">
+      <span class="pin pin-red"></span>
+      <span class="tape tape-right"></span>
+      <p class="font-mono text-[10px] tracking-[0.2em] text-blood/80 uppercase">Kayıp Dosyası #01</p>
+      <h4 class="font-display text-lg text-white mt-2 leading-snug">
+        "Oklahoma'da Bir Adam Daha Kayboldu"
+      </h4>
+      <p class="mt-3 text-sm text-mist leading-relaxed clipping">
+        Yerel benzinlikten son kez görülen adamdan üç gündür haber alınamıyor. Yetkililer
+        olayı "izole vaka" olarak nitelendiriyor.
+      </p>
+      <p class="mt-4 font-mono text-[10px] tracking-[0.2em] text-blood/70 uppercase">Durum: Çözülmemiş</p>
+    </div>
+
+    <!-- KART: Kayıp Dosyası #2 -->
+    <div class="evidence-card fade-up" style="--d:.25s">
+      <span class="pin pin-red"></span>
+      <span class="tape tape-left"></span>
+      <p class="font-mono text-[10px] tracking-[0.2em] text-blood/80 uppercase">Kayıp Dosyası #02</p>
+      <h4 class="font-display text-lg text-white mt-2 leading-snug">
+        "Aynı Benzinlik, İkinci Kayıp"
+      </h4>
+      <p class="mt-3 text-sm text-mist leading-relaxed clipping">
+        İlk kayboluştan haftalar sonra, aynı benzinlik kayıtlarında ikinci bir isim daha
+        ortaya çıktı. Soruşturma dosyaları birleştirildi.
+      </p>
+      <p class="mt-4 font-mono text-[10px] tracking-[0.2em] text-blood/70 uppercase">Bağlantı: Aynı Benzinlik</p>
+    </div>
+
+    <!-- KART: Olivia -->
+    <div class="evidence-card evidence-card--locked fade-up" style="--d:.35s">
+      <span class="pin"></span>
+      <span class="tape tape-right"></span>
+      <div class="evidence-photo evidence-photo--locked">
+        <svg viewBox="0 0 24 24" class="w-8 h-8 text-mist/60" fill="none" stroke="currentColor" stroke-width="1.3">
+          <rect x="5" y="10" width="14" height="10" rx="1.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+        </svg>
+      </div>
+      <p class="font-mono text-[10px] tracking-[0.2em] text-mist/60 uppercase mt-4">Dosya #—</p>
+      <h4 class="font-display text-xl text-white mt-1">Olivia</h4>
+      <p class="font-mono text-[11px] text-accent uppercase tracking-[0.15em] mt-1">Kimyager</p>
+      <p class="mt-3 text-sm text-mist leading-relaxed">
+        Profil kilitli. Geçmişi, meslektaşları, gerçek işi — hepsi karanlıkta.
+      </p>
+      <p class="mt-4 font-mono text-[10px] tracking-[0.2em] text-mist/50 uppercase">Not: Bilinmiyor</p>
+    </div>
+
+  </div>
+
+  <p class="text-center mt-16 font-mono text-[11px] text-mist/40 uppercase tracking-[0.25em] fade-up">
+    Bir ipucun mu var? Klavyende bir isim yaz.
+  </p>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer id="duyuru" class="relative px-6 lg:px-20 py-20 border-t border-mist/10">
+  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-14">
+
+    <div class="fade-up">
+      <p class="font-mono text-xs tracking-[0.3em] text-accent uppercase mb-3">Takipte Kal</p>
+      <h4 class="font-display italic text-2xl text-white mb-4">Soruşturma sürüyor.</h4>
+      <p class="text-sm text-mist leading-relaxed mb-6">
+        Yazarın çalışma notlarını ve dosyadan yeni kırıntıları Instagram'da paylaşıyoruz.
+      </p>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="inline-flex items-center gap-3 rounded-full border border-mist/25 px-5 py-3 font-mono text-xs uppercase tracking-[0.15em] text-ink/80 hover:border-accent/50 hover:text-accent transition-colors">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/>
+        </svg>
+        @raftakiadamlar
+      </a>
+    </div>
+
+    <div class="fade-up" style="--d:.1s">
+      <p class="font-mono text-xs tracking-[0.3em] text-accent uppercase mb-3">Bilgilendirme</p>
+      <h4 class="font-display italic text-2xl text-white mb-4">Yeni bölüm yayınlandığında haber ver.</h4>
+      <form id="notifyForm" class="flex flex-col sm:flex-row gap-3">
+        <input
+          id="notifyEmail"
+          type="email"
+          required
+          placeholder="e-posta adresin"
+          class="flex-1 bg-white/[0.03] border border-mist/20 rounded-full px-5 py-3 text-sm text-ink placeholder:text-mist/50 outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/40 transition-colors"
+        />
+        <button type="submit" class="rounded-full bg-accent/15 border border-accent/40 text-accent px-6 py-3 font-mono text-xs tracking-[0.15em] uppercase hover:bg-accent hover:text-bg transition-all duration-300 whitespace-nowrap">
+          Haber Ver
+        </button>
+      </form>
+      <p id="notifyMsg" class="mt-3 font-mono text-[11px] text-accent uppercase tracking-[0.15em] opacity-0 transition-opacity duration-300">
+        Kaydın alındı. Dosya güncellendiğinde ilk sen öğreneceksin.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="max-w-5xl mx-auto mt-16 pt-8 border-t border-mist/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="font-mono text-[11px] text-mist/50 uppercase tracking-[0.2em]">© 2026 Pepper Pots · Raftaki Adamlar</p>
+    <p class="font-mono text-[11px] text-mist/30 uppercase tracking-[0.2em]">Dosya No. 2024-0917</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
